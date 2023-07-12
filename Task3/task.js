@@ -2,53 +2,38 @@ const listImg = [...document.querySelectorAll('.slider__item')]
 const nextArrow = document.querySelector('.slider__arrow_next')
 const prevArrow = document.querySelector('.slider__arrow_prev')
 
-const point = [...document.querySelectorAll('.slider__dot')]
+const points = [...document.querySelectorAll('.slider__dot')]
 
-let i = 0
+function getActivPosition() {
+    return listImg.findIndex(element => element.classList.contains('slider__item_active'))
+}
+
+function changePosition(Position) {
+    let activId = getActivPosition()
+    listImg[activId].classList.remove('slider__item_active')
+    listImg[Position].classList.add('slider__item_active')
+    
+}
 
 nextArrow.onclick = () => {
-
-    let namecls = listImg[i].className
-
-    if (i < listImg.length - 1) {
-        if (namecls.includes('slider__item_active')){
-            listImg[i].classList.remove('slider__item_active')
-            listImg[i+1].classList.add('slider__item_active')
-        } 
-        i++
-    } else {
-        listImg[i].classList.remove('slider__item_active')
-        i = 0
-        listImg[i].classList.add('slider__item_active')
+    let activId = getActivPosition()
+    if (activId >= listImg.length - 1) {
+        activId = -1
     }
+    changePosition(activId+1)
 }
 
 prevArrow.onclick = () => {
-
-    let namecls = listImg[i].className
-
-    if (i > 0) {
-        if (namecls.includes('slider__item_active')){
-            listImg[i].classList.remove('slider__item_active')
-            listImg[i-1].classList.add('slider__item_active')
-        } 
-        i--
-    } else {
-        listImg[i].classList.remove('slider__item_active')
-        i = listImg.length - 1
-        listImg[i].classList.add('slider__item_active')
+    let activId = getActivPosition()
+    if (activId <= 0) {
+        activId = listImg.length
     }
+    changePosition(activId-1)
 }
 
-
-point.forEach((el, index) => {
-    el.addEventListener('click', () => {
-        listImg.forEach((element) => {
-            if (element.className.includes('slider__item_active')) {
-                element.classList.remove('slider__item_active')
-            }
-        })
-        listImg[index].classList.add('slider__item_active')
-        i = index
+points.forEach((point) => {
+    point.addEventListener('click', () => {
+        let clickPosition = points.findIndex(value => value == point)
+        changePosition(clickPosition)
     })
 })

@@ -1,23 +1,20 @@
-let a = [...document.querySelectorAll('.menu__link')]
-let b = [...document.querySelectorAll('.menu__item')]
+let menuLinkList = [...document.querySelectorAll('.menu__link')]
+let menuItemList = [...document.querySelectorAll('.menu__item')]
 
-let indexRemove = null;
-
-a.forEach((el) => {
+menuLinkList.forEach((el) => {
     el.addEventListener('click', (event) => {
-        let cEl = el.parentElement.children[1]
-        
-        if (cEl) {
+        let givenElement = el.closest('.menu__item').querySelector('.menu_sub')
+        if (givenElement) {
             event.preventDefault()
-            if (cEl.className.includes('menu_active')) {
-                cEl.classList.remove('menu_active')
+            if (givenElement.className.includes('menu_active')) {
+                givenElement.classList.remove('menu_active')
             } else {
-                b.forEach((element, index) => {
+                menuItemList.forEach((element) => {
                     if (element.querySelector('.menu_active')) {
                         element.querySelector('.menu_sub').classList.remove('menu_active');
                         }
                     });
-                cEl.classList.add('menu_active')
+                givenElement.classList.add('menu_active')
             }
         }
     })
